@@ -11,14 +11,21 @@ class Service(object):
         if users is None:
             return []
         else:
-            return [user for user in users]
+            return list(users)
+
+    def find_all_tasks(self):
+        tasks = self.repo_client.find_all("task", {})
+        if tasks is None:
+            return []
+        else:
+            return list(tasks)
 
     def find_user_all_tasks(self, user_id):
         tasks = self.repo_client.find_all("task", {"userId": user_id})
         if tasks is None:
             return []
         else:
-            return [task for task in tasks]
+            return list(tasks)
 
     def create_user_task(self, user_id, task_title):
         task = self.repo_client.create("task", {"title": task_title, "userId": user_id, "sign_up": []})
@@ -31,7 +38,6 @@ class Service(object):
         else:
             sign_up = task['sign_up']
             sign_up.append(time)
-            print(34, sign_up)
             task = self.repo_client.update('task', {"_id": task_id}, {"sign_up": sign_up})
             return task
 

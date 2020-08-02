@@ -4,23 +4,28 @@ import json as json
 from bson import ObjectId
 
 
-@app.route('/hello')
-def hello():
-    return 'Hello, World!'
+@app.route('/')
+def index():
+    return app.send_static_file("index.html")
 
 
-@app.route('/users', methods=["GET"])
+@app.route('/api/users', methods=["GET"])
 def users_get():
     return json_response(mongo.find_all_users())
 
 
-@app.route("/tasks", methods=["GET"])
+@app.route("/api/all_tasks", methods=["GET"])
+def tasks_all_get():
+    return json_response(mongo.find_all_tasks())
+
+
+@app.route("/api/tasks", methods=["GET"])
 def tasks_get():
-    user = request.args.get('user')
+    user = request.args.get('userId')
     return json_response(mongo.find_user_all_tasks(user))
 
 
-@app.route("/tasks", methods=["POST"])
+@app.route("/api/tasks", methods=["POST"])
 def task_create():
     user = request.form.get('user')
     title = request.form.get('title')
@@ -33,14 +38,14 @@ def task_create():
     })
 
 
-@app.route("/tasks", methods=["DELETE"])
+@app.route("/api/tasks", methods=["DELETE"])
 def task_delete():
     task_id = request.form.get('task_id')
     delete_result = mongo.delete_task(ObjectId(task_id))
     return json_response(delete_result.deleted_count)
 
 
-@app.route("/sign_up_task", methods=["PATCH"])
+@app.route("/api/tasks", methods=["PATCH"])
 def sign_up_task():
     task_id = request.form.get('task_id')
     time_stamp = request.form.get('time_stamp')
