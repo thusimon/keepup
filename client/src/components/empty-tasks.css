@@ -9,3 +9,8 @@
 .empty-tasks .message span:nth-child(2){
   vertical-align: middle;
 }
+
+.empty-tasks .add-task-btn svg:hover {
+  cursor: pointer;
+  fill:#004AAD;
+}

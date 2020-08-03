@@ -25,7 +25,7 @@ const UserTasks = ({userName, userId}) => {
     setViewState(2);
   }
 
-  const closeModel = (shouldSyncTasks) => {
+  const closeModel = () => {
     setViewState(0);
     getTasks(userId);
   }
@@ -38,7 +38,7 @@ const UserTasks = ({userName, userId}) => {
       taskList.map(task => {
         return <TaskCard key={task._id} userId={userId} taskId={task._id} taskTitle={task.title} signUps={task.sign_up} />
       }) :
-      <EmptyTasks />
+      <EmptyTasks addTask={addTaskHandler} />
     } else {
       return <CreateTask userId={userId} closeModel={closeModel} />
     }
