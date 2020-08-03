@@ -1,0 +1,43 @@
+.page-header {
+  background-color: #2699FB;
+  font-size: 24px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.page-header .nav-seperator {
+  border: 1px solid #F5F5F5
+}
+
+.page-header ul {
+  list-style-type: none;
+  margin: 0px;
+  padding: 10px;
+}
+
+.page-header ul li {
+  display: inline;
+  margin: 0px 10px;
+}
+
+.page-header ul li a {
+  color: #F5F5F5;
+  text-decoration: none;
+}
+
+.page-header ul li a:hover {
+  color: #FFFFFF;
+}
+
+.clock {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  color: #F5F5F5;
+  margin: 0px 10px;
+}
+
+.clock svg {
+  margin: 0px 5px 0px 0px;
+  fill: #F5F5F5;
+}

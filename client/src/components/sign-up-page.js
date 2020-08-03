@@ -7,6 +7,7 @@ const SignUpPage = () => {
     fetch('/api/users')
     .then(res => res.json())
     .then(users => {
+      users.sort((user1, user2) => user1.sort - user2.sort);
       setUsers(users);
     })
   }, [])

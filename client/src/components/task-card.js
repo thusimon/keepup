@@ -1,21 +1,37 @@
 import React, {useState, useEffect} from 'react';
-import {isTimeInToday} from '../utils/time';
+import {getTimeElaspedFromNow} from '../utils/time';
+import './task-card.css';
 
 const TaskCard = ({userId, taskId, taskTitle, signUps}) => {
   // lastCheckTime should UNIX time
-  const [checkDisable, setCheckDisable] = useState(true);
+  const [signState, setSignState] = useState({
+    disable: true,
+    clz: 'new-task',
+    msg: ''
+  });
   useEffect(() => {
     const lastCheckTime = signUps.length > 0 ? signUps[signUps.length-1] : null;
-    const lastCheckTimeInt = parseInt(lastCheckTime);
-    if (isNaN(lastCheckTimeInt) || isTimeInToday(lastCheckTimeInt) === -1) {
+    const timeElaspsedInfo = getTimeElaspedFromNow(parseInt(lastCheckTime));
+    if (timeElaspsedInfo.clz !== 'today') {
       // no lastCheckTime or lastCheckTime is before today, should enable check button
-      setCheckDisable(false);
+      setSignState({
+        disable: false,
+        clz: timeElaspsedInfo.clz,
+        msg: timeElaspsedInfo.msg
+      });
+    } else {
+      setSignState({
+        disable: true,
+        clz: timeElaspsedInfo.clz,
+        msg: timeElaspsedInfo.msg
+      });
     }
   }, [taskId, signUps]);
   const onClickHandler = () => {
     const formData = new FormData();
+    const signedTime = Date.now();
     formData.append('task_id', taskId);
-    formData.append('time_stamp', Date.now());
+    formData.append('time_stamp', signedTime);
     fetch('/api/tasks', {
       method: 'PATCH',
       body: formData
@@ -23,14 +39,20 @@ const TaskCard = ({userId, taskId, taskTitle, signUps}) => {
     .then(resp => resp.json())
     .then(() => {
       // should disable the check button
-      setCheckDisable(true);
+      setSignState({
+        disable: true,
+        clz: 'today',
+        msg: 'Just now'
+      });
     });
   }
-  return <div>
-    <div>{taskTitle}</div>
-    <div>
-      <input type="checkbox" checked={checkDisable} readOnly></input>
-      <button onClick={onClickHandler} disabled={checkDisable}>Sign Up!</button>
+  return <div className="task-card">
+    <div className={`task-info ${signState.clz}`}>
+      <div className="task-title">{taskTitle}</div>
+      <div className="task-last-signed">{`Last signed at: ${signState.msg}`}</div>
+    </div>
+    <div className="task-sign">
+      <button onClick={onClickHandler} disabled={signState.disable}>Sign Up!</button>
     </div>
   </div>
 }

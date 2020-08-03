@@ -1,0 +1,73 @@
+.task-card {
+  width: 200px;
+  height: 150px;
+  min-height: 150px;
+  min-width: 200px;
+  border: 1px solid #BCE0FD;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin: 10px;
+}
+
+.task-card .task-info {
+  flex: 1;
+}
+
+.task-card .new-task {
+  background-color: #FFFFFF;
+}
+
+.task-card .today {
+  background-color: #C7FDBC;
+}
+
+.task-card .days-ago-2 {
+  background-color: #F5FDBC;
+}
+
+.task-card .days-ago-7 {
+  background-color: #FDEABC;
+}
+
+.task-card .days-ago-30 {
+  background-color: #FCBFB2;
+}
+
+.task-card .task-title {
+  margin: 10px;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.task-card .task-last-signed {
+  margin: 10px;
+  font-size: 14px;
+  font-style: italic;
+}
+
+.task-card .task-sign button {
+  height: 40px;
+  width: 100%;
+  background-color: #2699FB;
+  color: #F5F5F5;
+  font-size: 18px;
+}
+
+.task-card .task-sign button:disabled {
+  cursor: not-allowed;
+  background-color: #87C1F2;
+}
+
+.task-card .task-sign button:enabled {
+  cursor: pointer;
+}
+
+.task-card .task-sign button:hover:enabled {
+  background-color: #007FEB;
+}
+
+.task-card .task-sign button:active:enabled {
+  background-color: #87C1F2;
+}
+
