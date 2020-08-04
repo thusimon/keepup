@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {getTimeElaspedFromNow} from '../utils/time';
+import {isTimeInToday, getTimeElaspedFromNow} from '../utils/time';
 import './task-card.css';
 
 const TaskCard = ({userId, taskId, taskTitle, signUps}) => {
@@ -11,17 +11,20 @@ const TaskCard = ({userId, taskId, taskTitle, signUps}) => {
   });
   useEffect(() => {
     const lastCheckTime = signUps.length > 0 ? signUps[signUps.length-1] : null;
-    const timeElaspsedInfo = getTimeElaspedFromNow(parseInt(lastCheckTime));
-    if (timeElaspsedInfo.clz !== 'today') {
+    const lastCheckTimeInt = parseInt(lastCheckTime);
+    const timeElaspsedInfo = getTimeElaspedFromNow(lastCheckTimeInt);
+    const timeInToday = isTimeInToday(lastCheckTimeInt)
+    if (timeInToday) {
       // no lastCheckTime or lastCheckTime is before today, should enable check button
       setSignState({
-        disable: false,
+        disable: true,
         clz: timeElaspsedInfo.clz,
         msg: timeElaspsedInfo.msg
       });
     } else {
+      // no lastCheckTime or lastCheckTime is before today, should enable check button
       setSignState({
-        disable: true,
+        disable: false,
         clz: timeElaspsedInfo.clz,
         msg: timeElaspsedInfo.msg
       });

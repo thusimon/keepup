@@ -1,5 +1,14 @@
 const dayMS = 24*60*60*1000;
 
+export const isTimeInToday = (time) => {
+  if (isNaN(time)) {
+    return false;
+  }
+  const curTime = new Date(Date.now());
+  const todayStart = new Date(curTime.getFullYear(), curTime.getMonth(), curTime.getDate()).getTime()
+  return time > todayStart;
+}
+
 export const getTimeElaspedFromNow = (time) => {
   if (isNaN(time)) {
     return {
@@ -19,7 +28,12 @@ export const getTimeElaspedFromNow = (time) => {
     return {
       clz: 'today',
       msg: `${Math.floor(timeElapsed/60000)} mins ago`
-    }
+    };
+  } else if (timeElapsed < 120 * 60000) {
+    return {
+      clz: 'today',
+      msg: `1 hour ago`
+    };
   } else if (timeElapsed < dayMS) {
     return {
       clz: 'today',
