@@ -8,7 +8,7 @@ const Clock = () => {
     hour: 'numeric',
     minute: 'numeric',
     second: 'numeric',
-    hour12: false
+    hourCycle: 'h23'
   });
 
   const [clock, setClock] = useState(new Date(Date.now()));
