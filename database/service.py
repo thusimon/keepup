@@ -1,6 +1,16 @@
 from database import Repository
 from database.mongo import MongoRepository
+import datetime
+from datetime import timezone
 
+# get item created_at
+def add_created_at(row, epoch = datetime.datetime.utcfromtimestamp(0)): 
+    if row['_id'] is None:
+        return row
+    else:
+        generate_time = row['_id'].generation_time
+        row['createdAt'] = generate_time.replace(tzinfo=timezone.utc).timestamp()*1000
+        return row
 
 class Service(object):
     def __init__(self, repo_client=Repository(adapter=MongoRepository)):
@@ -25,7 +35,7 @@ class Service(object):
         if tasks is None:
             return []
         else:
-            return list(tasks)
+            return [add_created_at(task) for task in tasks]
 
     def create_user_task(self, user_id, task_title):
         task = self.repo_client.create("task", {"title": task_title, "userId": user_id, "sign_up": []})

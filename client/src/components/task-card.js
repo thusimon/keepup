@@ -55,7 +55,10 @@ const TaskCard = ({userId, taskId, taskTitle, signUps}) => {
       <div className="task-last-signed">{`Last signed at: ${signState.msg}`}</div>
     </div>
     <div className="task-sign">
-      <button onClick={onClickHandler} disabled={signState.disable}>Sign Up!</button>
+      <button onClick={onClickHandler} disabled={signState.disable} 
+              title={signState.disable ? 'Already signed up, come tomorrow' : 'Sign up today!'}>
+        Sign Up!
+      </button>
     </div>
   </div>
 }

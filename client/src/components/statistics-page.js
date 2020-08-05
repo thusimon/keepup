@@ -1,16 +1,23 @@
-import React, {useEffect} from 'react';
-import * as d3 from "d3";
+import React, {useState, useEffect} from 'react';
+import UserCharts from './user-charts';
 
-const Statistics = () => {
-  useEffect(() => {
-    console.log('page loaded')
-    const svg = d3.select('#chart-area').append('svg').attr('width', 400).attr('height', 400)
-    const circle = svg.append('circle').attr('cx', 200).attr('cy', 200).attr('r',100).attr('fill', 'blue');
-
-  }, []);
+const StatisticsPage = () => {
+  const [users, setUsers] = useState([]);
+  useEffect(()=> {
+    fetch('/api/users')
+    .then(res => res.json())
+    .then(users => {
+      users.sort((user1, user2) => user1.sort - user2.sort);
+      setUsers(users);
+    })
+  }, [])
   return <div>
-    <div id="chart-area"></div>
+    {
+      users.map(user => {
+        return <UserCharts key={user._id} userName={user.name} userId={user._id} />
+      })
+    }
   </div>
 }
 
-export default Statistics;
+export default StatisticsPage;

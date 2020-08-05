@@ -43,7 +43,7 @@ export const getTimeElaspedFromNow = (time) => {
     const days = Math.floor(timeElapsed/dayMS);
     if (days === 1) {
       return {
-        clz: 'days-ago-2',
+        clz: 'days-ago-1',
         msg: '1 day ago'
       }
     } else if (days <= 2) {
@@ -63,4 +63,27 @@ export const getTimeElaspedFromNow = (time) => {
       }
     }
   }
+}
+
+export const getCurrentWeek = () => {
+  const curTime = new Date(Date.now());
+  const todayStart = new Date(curTime.getFullYear(), curTime.getMonth(), curTime.getDate()).getTime();
+  const todayDayOfWeek = curTime.getDay();
+  const weekStart = todayStart - todayDayOfWeek*dayMS;
+  const currentWeek = [];
+  for (let day = 0; day < 7; day++) {
+    currentWeek.push(weekStart + day*dayMS)
+  }
+  return currentWeek;
+}
+
+export const mapSignUpToWeekly = (signUps, week, currentDay) => {
+
+}
+export const getTaskWeeklyData = (taskList) => {
+  const currentWeek = getCurrentWeek();
+  return taskList.map(task => {
+    const signUps = task.sign_up;
+
+  })
 }
