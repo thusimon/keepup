@@ -1,11 +1,17 @@
+import {WEEKDAY} from './date';
+
 const dayMS = 24*60*60*1000;
+
+export const getTodayStart = () => {
+  const curTime = new Date(Date.now());
+  return new Date(curTime.getFullYear(), curTime.getMonth(), curTime.getDate()).getTime();
+}
 
 export const isTimeInToday = (time) => {
   if (isNaN(time)) {
     return false;
   }
-  const curTime = new Date(Date.now());
-  const todayStart = new Date(curTime.getFullYear(), curTime.getMonth(), curTime.getDate()).getTime()
+  const todayStart = getTodayStart();
   return time > todayStart;
 }
 
@@ -77,13 +83,42 @@ export const getCurrentWeek = () => {
   return currentWeek;
 }
 
-export const mapSignUpToWeekly = (signUps, week, currentDay) => {
 
+export const isDayInSignUps = (day, signUps) => {
+  const signUpInDay = signUps.filter(signUp => {
+    return signUp >= day && signUp <= day + dayMS;
+  });
+  return signUpInDay.length > 0;
 }
-export const getTaskWeeklyData = (taskList) => {
-  const currentWeek = getCurrentWeek();
-  return taskList.map(task => {
-    const signUps = task.sign_up;
 
-  })
+export const mapSignUpToWeekly = (title, signUps, week, todayStart) => {
+  return week.map((weekDay, idx) => {
+    const isSigned = isDayInSignUps(weekDay, signUps);
+    const weekDayPassed = weekDay <= todayStart;
+    const dayName = WEEKDAY[idx];
+    let weekDayView = 0;
+    // signed 1, not signed 0, future day -1;
+    if (isSigned) {
+      weekDayView = 1;
+    } else if (weekDayPassed) {
+      weekDayView = 0;
+    } else {
+      weekDayView = -1;
+    }
+    return {
+      weekDayView,
+      weekDay,
+      dayName,
+      title
+    };
+  });
+}
+
+export const getTaskWeeklyViewData = (taskList) => {
+  const currentWeek = getCurrentWeek();
+  const todayStart = getTodayStart();
+  return taskList.map(task => {
+    task.weekView = mapSignUpToWeekly(task.title, task.sign_up, currentWeek, todayStart);
+    return task;
+  });
 }
