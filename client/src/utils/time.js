@@ -122,3 +122,28 @@ export const getTaskWeeklyViewData = (taskList) => {
     return task;
   });
 }
+
+export const getSignUpRate = (taskList, backToDays) => {
+  const startTodayTime = getTodayStart();
+  if (backToDays > 0) {
+    const searchToTime = startTodayTime - dayMS * backToDays;
+    return taskList.map(task => {
+      const signUps = task.sign_up.filter(s => s >= searchToTime);
+      task.data = signUps.length / backToDays;
+      task.range = [searchToTime, startTodayTime];
+      task.name = task.title;
+      return task;
+    });
+  } else {
+    // find the day the task is created
+    return taskList.map(task => {
+      const createdTime = task.createdAt;
+      let daysFromCreated = Math.floor((startTodayTime - createdTime) / dayMS);
+      daysFromCreated = daysFromCreated > 0 ? daysFromCreated : 1;
+      task.data = task.sign_up.length / daysFromCreated;
+      task.range = [createdTime, startTodayTime];
+      task.name = task.title;
+      return task;
+    });
+  }
+}
